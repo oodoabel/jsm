@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Search from './assets/components/Search'
 
-const API_BASE_URL = 'http://www.omdbapi.com/?i=tt3896198&apikey=6b4a9cca';
+const API_BASE_URL = 'http://www.omdbapi.com/?i=tt3896198&apikey=de9001e3';
 
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
