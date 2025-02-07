@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import Search from './assets/components/Search'
+import config from '../config'
 
-const API_BASE_URL = 'http://www.omdbapi.com/?i=tt3896198&apikey=de9001e3';
+const API_BASE_URL = 'https://api.themoviedb.org/3';
 
-const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
+const token = config.ACCESS_TOKEN
+
+// console.log({token});
 
 const API_OPTIONS = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    authorization: `Bearer ${API_KEY}`
+    Authorization: `Bearer ${token}`
+
   }
+
+  
 }
+
 
 const App = () => {
 
@@ -19,24 +26,35 @@ const App = () => {
 
   const [ errorMessage, setErrorMessage ] = useState('')
 
+
+  
   const fetchMovies = async () => {
     try{
 
-      const endpoint = `${API_BASE_URL}/discover/movies?sort_by=popularity.desc`;
+      const endpoint = `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
 
       const response = await fetch(endpoint, API_OPTIONS);
+      
+      if(!response.ok) {
+        throw new Error('Failed to fetch movies');
+      }
+      
+      const data = await response.json()
 
-      throw new Error('Failed to fetch movies');
+      console.log({data})
 
     } catch(error) {
-      console.error(`Error fetching movies: ${error}`);
+      console.log({
+        message: 'error fetching movies',
+        error
+      });
       setErrorMessage('Error fetching movies. Please try again later');
     } 
   }
 
   useEffect( () => {
     fetchMovies()
-  })
+  }, [ ])
   return (
     <main>
     <div className='pattern'/>

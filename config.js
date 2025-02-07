@@ -1,0 +1,5 @@
+const config = {
+    ACCESS_TOKEN: "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZmUwMmZjMDk0MTkzM2RlMTlhMTQwNWIwMWNhYmI0MyIsIm5iZiI6MTczODcwNzc2OC4wMTIsInN1YiI6IjY3YTI5MzM4YThiNmZjZTU1ZDhhNjNlNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rNgvPp1N6ZD4Coc8RpDqM_D5Ly0NulBy2GIjyOlpGUk"
+}
+
+export default config;
