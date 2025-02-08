@@ -45,20 +45,20 @@ const App = () => {
         throw new Error('Failed to fetch movies');
       }
       
-      const data = await response.json()
+      const data = await response.json();
 
-      const result = data.result;
-      setMovieList([result]);
+      const result = await data.results;
+      setMovieList(result);
 
 
-      if (data.response === 'False') {
-        setErrorMessage(data.error || 'failed to fetch movies');
-        setMovieList([]);
-        return;
-      }
+      // if (data.response === 'False') {
+      //   setErrorMessage(data.error || 'failed to fetch movies');
+      //   setMovieList([]);
+      //   return;
+      // }
 
-      setMovieList(data.result || []);
-      console.log({data})
+      setMovieList(data.results || []);
+      console.log({movieList})
 
         } catch(error) {
           console.log({
@@ -87,7 +87,7 @@ const App = () => {
       <section>
         <h2>All movies</h2>
 
-        isLoading ? (
+       {isLoading} ? (
           <p className='text-white'>Loading...</p>
             ) : errorMessage ? (
                 <p className='text-red-500'>{errorMessage}</p>
