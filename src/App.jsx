@@ -24,11 +24,17 @@ const App = () => {
 
   const [ searchTerm, setSearchTerm ] = useState('');
 
-  const [ errorMessage, setErrorMessage ] = useState('')
+  const [ errorMessage, setErrorMessage ] = useState('');
 
+  const [ movieList, setMovieList ] = useState([]);
 
+  const [ isLoading, setIsLoading ] = useState(false)
   
   const fetchMovies = async () => {
+
+    setIsLoading(true);
+    setErrorMessage('');
+
     try{
 
       const endpoint = `${API_BASE_URL}/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
@@ -41,15 +47,28 @@ const App = () => {
       
       const data = await response.json()
 
+      const result = data.result;
+      setMovieList([result]);
+
+
+      if (data.response === 'False') {
+        setErrorMessage(data.error || 'failed to fetch movies');
+        setMovieList([]);
+        return;
+      }
+
+      setMovieList(data.result || []);
       console.log({data})
 
-    } catch(error) {
-      console.log({
-        message: 'error fetching movies',
-        error
-      });
-      setErrorMessage('Error fetching movies. Please try again later');
-    } 
+        } catch(error) {
+          console.log({
+            message: 'error fetching movies',
+            error
+          });
+          setErrorMessage('Error fetching movies. please try again later');
+        } finally{
+          setIsLoading(false);
+        }
   }
 
   useEffect( () => {
@@ -63,16 +82,31 @@ const App = () => {
       <header>
         <img src="./hero.png" alt="Hero banner" />
         <h1>Find <span className='text-gradient'>Movies</span> you will enjoy without the hassle</h1>
-      </header>
-
       <Search searchTerm = {searchTerm} setSearchTerm = {setSearchTerm} />
-      <h1 className='text-white'>{searchTerm}</h1>
+      </header>
+      <section>
+        <h2>All movies</h2>
+
+        isLoading ? (
+          <p className='text-white'>Loading...</p>
+            ) : errorMessage ? (
+                <p className='text-red-500'>{errorMessage}</p>
+            ) : (
+                <ul>
+                    <li className='text-white'>
+                    {movieList.map((movie) => (
+                        <p className='text-white' key={movie.id}>{movie.title}</p>
+                    ))}
+                    </li>
+                </ul>
+            )
+      </section>
 
     </div>
     
      
     </main>
-  )
+  ) 
 }
 
 export default App
