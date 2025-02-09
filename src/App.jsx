@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Search from './assets/components/Search'
+import Spinner from './assets/components/spinner';
 import config from '../config'
+import MovieCard from './assets/components/MovieCard';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -84,22 +86,22 @@ const App = () => {
         <h1>Find <span className='text-gradient'>Movies</span> you will enjoy without the hassle</h1>
       <Search searchTerm = {searchTerm} setSearchTerm = {setSearchTerm} />
       </header>
-      <section>
-        <h2>All movies</h2>
+      <section className='all-movies '>
+        <h2 className='mt-[40px]'>All movies</h2>
 
-       {isLoading} ? (
-          <p className='text-white'>Loading...</p>
+       {isLoading ? (
+          <Spinner />
             ) : errorMessage ? (
                 <p className='text-red-500'>{errorMessage}</p>
             ) : (
-                <ul>
+                <ul className='flex'>
                     <li className='text-white'>
                     {movieList.map((movie) => (
-                        <p className='text-white' key={movie.id}>{movie.title}</p>
+                        <MovieCard key= {movie.id} movie={movie}/>
                     ))}
                     </li>
                 </ul>
-            )
+            )}
       </section>
 
     </div>
